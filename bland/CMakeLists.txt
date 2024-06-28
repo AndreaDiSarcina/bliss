@@ -21,6 +21,7 @@ if (WITH_CUDA)
   # execute_process(COMMAND nvcc --list-gpu-code OUTPUT_VARIABLE NVCC_LIST_GPU_CODE)
   set(NVCC_LIST_GPU_CODE "sm_35,sm_37,sm_50,sm_52,sm_53,sm_60,sm_61,sm_62,sm_70,sm_72,sm_75,sm_80")
   string(REPLACE "\n" ";" NVCC_CODE_LINES ${NVCC_LIST_GPU_CODE})
+  message(NVCC_CODE_LINES)
 
   # Process each line
   set(NVCC_ARCHS "")
@@ -39,6 +40,7 @@ if (WITH_CUDA)
   list(LENGTH NVCC_ARCHS NVCC_NUM_ARCHS)
   # Convert the list of architectures to a string
   string(JOIN "," NVCC_ARCHS_STR ${NVCC_ARCHS})
+  message(NVCC_ARCHS_STR)
   
   message("BLAND:: enabling cuda (the language)")
   set(CUDA_ARCHITECTURES all)
