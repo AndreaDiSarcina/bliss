@@ -40,9 +40,9 @@ if (WITH_CUDA)
   list(LENGTH NVCC_ARCHS NVCC_NUM_ARCHS)
   # Convert the list of architectures to a string
   string(JOIN "," NVCC_ARCHS_STR ${NVCC_ARCHS})
-  message(${NVCC_ARCHS_STR})
   set(NVCC_ARCHS_STR "compute_35,compute_37,compute_50,compute_52,compute_53,compute_60,compute_61,compute_62,compute_70,compute_72,compute_75,compute_80")
   string(REPLACE "," "\n" NVCC_ARCHS ${NVCC_ARCHS_STR})
+  message(${NVCC_ARCHS_STR})
 
   
   message("BLAND:: enabling cuda (the language)")
