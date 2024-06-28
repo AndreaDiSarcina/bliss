@@ -42,7 +42,7 @@ if (WITH_CUDA)
   # Convert the list of architectures to a string
   string(JOIN "," NVCC_ARCHS_STR ${NVCC_ARCHS})
   # set(NVCC_ARCHS_STR "sm_35,sm_37,sm_50,sm_52,sm_53,sm_60,sm_61,sm_62,sm_70,sm_72,sm_75,sm_80")
-  set(NVCC_ARCHS_STR "sm_60")
+  set(NVCC_ARCHS_STR "60")
   string(REPLACE "," "\n" NVCC_ARCHS ${NVCC_ARCHS_STR})
   message(${NVCC_ARCHS_STR})
 
