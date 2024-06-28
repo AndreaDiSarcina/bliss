@@ -19,7 +19,7 @@ add_feature_info(CUDA WITH_CUDA "Using CUDA as a backend for array storage and c
 if (WITH_CUDA)
 
   # execute_process(COMMAND nvcc --list-gpu-code OUTPUT_VARIABLE NVCC_LIST_GPU_CODE)
-  set(NVCC_LIST_GPU_CODE "sm_60;sm_61")
+  set(NVCC_LIST_GPU_CODE "sm_35,sm_37,sm_50,sm_52,sm_53,sm_60,sm_61,sm_62,sm_70,sm_72,sm_75,sm_80")
   string(REPLACE "\n" ";" NVCC_CODE_LINES ${NVCC_LIST_GPU_CODE})
 
   # Process each line
