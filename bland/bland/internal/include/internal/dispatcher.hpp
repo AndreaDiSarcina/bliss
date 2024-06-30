@@ -288,7 +288,7 @@ ndarray dispatch_new3(ndarray &out, const ndarray &a, const S &b, Args... args) 
  * This requires one type deductions and passes through an underlying impl function with 2 template args
  **/
 template <typename F, typename S, typename ...Args>
-ndarray dispatch_new(ndarray &out, const S &b, Args... args) {
+ndarray dispatch_new_scalar(ndarray &out, const S &b, Args... args) {
     auto dtype = out.dtype();
 
     switch (dtype.code) {
@@ -353,7 +353,7 @@ ndarray dispatch_new(ndarray &out, const S &b, Args... args) {
  * * sum
  **/
 template <typename Out, class Op, typename... Args>
-ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
+ndarray dispatch_new_array(ndarray &out, const ndarray &a, Args... args) {
     auto dtype = a.dtype();
 
     switch (dtype.code) {
@@ -404,6 +404,9 @@ ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
 /**
  * out = f(a) where out and a are ndarray
 */
+
+
+/**
 template <class Op, typename... Args>
 ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
     auto dtype = out.dtype();
@@ -452,6 +455,111 @@ ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
         throw std::runtime_error("Unsupported datatype code");
     }
 }
+*/
+
+
+
+template <class Op, typename... Args>
+ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
+    if (a.is_scalar()) {
+        auto dtype = out.dtype();
+        switch (dtype.code) {
+        case kDLFloat: {
+            switch (dtype.bits) {
+            case 32:
+                return dispatch_new_scalar<float, Op>(out, a, std::forward<Args>(args)...);
+            // case 64:
+            //     return dispatch_new_scalar<double, Op>(out, a, std::forward<Args>(args)...);
+            default:
+                throw std::runtime_error("Unsupported float bitwidth");
+            }
+        }
+        case kDLInt: {
+            switch (dtype.bits) {
+            // case 8:
+            //     return dispatch_new_scalar<int8_t, Op>(out, a, std::forward<Args>(args)...);
+            // case 16:
+            //     return dispatch_new_scalar<int16_t, Op>(out, a, std::forward<Args>(args)...);
+            case 32:
+                return dispatch_new_scalar<int32_t, Op>(out, a, std::forward<Args>(args)...);
+            case 64:
+                return dispatch_new_scalar<int64_t, Op>(out, a, std::forward<Args>(args)...);
+            default:
+                throw std::runtime_error("Unsupported int bitwidth");
+            }
+        }
+        case kDLUInt: {
+            switch (dtype.bits) {
+            case 8:
+                return dispatch_new_scalar<uint8_t, Op>(out, a, std::forward<Args>(args)...);
+            // case 16:
+            //     return dispatch_new_scalar<uint16_t, Op>(out, a, std::forward<Args>(args)...);
+            case 32:
+                return dispatch_new_scalar<uint32_t, Op>(out, a, std::forward<Args>(args)...);
+            // case 64:
+            //     return dispatch_new_scalar<uint64_t, Op>(out, a, std::forward<Args>(args)...);
+            default:
+                throw std::runtime_error("Unsupported uint bitwidth");
+            }
+        }
+        default:
+            throw std::runtime_error("Unsupported datatype code");
+        }
+    } else {
+        auto dtype = out.dtype();
+        switch (dtype.code) {
+        case kDLFloat: {
+            switch (dtype.bits) {
+            case 32:
+                return dispatch_new_array<float, Op>(out, a, std::forward<Args>(args)...);
+            // case 64:
+            //     return dispatch_new_array<double, Op>(out, a, std::forward<Args>(args)...);
+            default:
+                throw std::runtime_error("Unsupported float bitwidth");
+            }
+        }
+        case kDLInt: {
+            switch (dtype.bits) {
+            // case 8:
+            //     return dispatch_new_array<int8_t, Op>(out, a, std::forward<Args>(args)...);
+            // case 16:
+            //     return dispatch_new_array<int16_t, Op>(out, a, std::forward<Args>(args)...);
+            case 32:
+                return dispatch_new_array<int32_t, Op>(out, a, std::forward<Args>(args)...);
+            case 64:
+                return dispatch_new_array<int64_t, Op>(out, a, std::forward<Args>(args)...);
+            default:
+                throw std::runtime_error("Unsupported int bitwidth");
+            }
+        }
+        case kDLUInt: {
+            switch (dtype.bits) {
+            case 8:
+                return dispatch_new_array<uint8_t, Op>(out, a, std::forward<Args>(args)...);
+            // case 16:
+            //     return dispatch_new_array<uint16_t, Op>(out, a, std::forward<Args>(args)...);
+            case 32:
+                return dispatch_new_array<uint32_t, Op>(out, a, std::forward<Args>(args)...);
+            // case 64:
+            //     return dispatch_new_array<uint64_t, Op>(out, a, std::forward<Args>(args)...);
+            default:
+                throw std::runtime_error("Unsupported uint bitwidth");
+            }
+        }
+        default:
+            throw std::runtime_error("Unsupported datatype code");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
 /**
