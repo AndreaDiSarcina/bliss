@@ -467,7 +467,8 @@ ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
             switch (dtype.bits) {
             case 32:
                 float scalar_value = a.scalarize<float>(); // Extract the scalar value from the ndarray
-                return dispatch_new_scalar<float, Op>(out, scalar_value, std::forward<Args>(args)...);
+                mean_impl impl(scalar_value); // Create a new mean_impl object with the scalar value
+                return dispatch_new_scalar<float, Op>(out, scalar_value, impl, std::forward<Args>(args)...);
             // case 64:
             //     return dispatch_new_scalar<double, Op>(out, a, std::forward<Args>(args)...);
             default:
