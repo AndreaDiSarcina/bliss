@@ -67,7 +67,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/bland_cuda_archs.hpp.in ${GEN_CUDA_AR
 # Only do these if this is the main project, and not if it is included through add_subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
-    set(CMAKE_CXX_STANDARD 17) # Cmake 3.8
+    set(CMAKE_CXX_STANDARD 14) # Cmake 3.8
     set(CMAKE_CXX_STANDARD_REQUIRED On)
     set(CMAKE_CXX_EXTENSIONS Off)
 
