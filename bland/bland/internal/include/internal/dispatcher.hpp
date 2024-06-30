@@ -287,8 +287,8 @@ ndarray dispatch_new3(ndarray &out, const ndarray &a, const S &b, Args... args) 
  * 
  * This requires one type deductions and passes through an underlying impl function with 2 template args
  **/
-template <typename F, typename S, typename ...Args>
-ndarray dispatch_new_scalar(ndarray &out, const S &b, Args... args) {
+template <typename F, typename S, typename Impl, typename ...Args>
+ndarray dispatch_new_scalar(ndarray &out, float scalar_value, const Impl &impl, Args... args) {
     auto dtype = out.dtype();
 
     switch (dtype.code) {
@@ -296,7 +296,7 @@ ndarray dispatch_new_scalar(ndarray &out, const S &b, Args... args) {
     case kDLFloat: {
         switch (dtype.bits) {
         case 32:
-            return F::template call<float, S>(out, b, std::forward<Args>(args)...);
+            return F::template call<float, S>(out, scalar_value, impl, std::forward<Args>(args)...);
         // case 64:
         //     return F::template call<double, S>(out, b, std::forward<Args>(args)...);
         default:
@@ -310,7 +310,7 @@ ndarray dispatch_new_scalar(ndarray &out, const S &b, Args... args) {
         // case 16:
         //     return F::template call<int16_t, S>(out, b, std::forward<Args>(args)...);
         case 32:
-            return F::template call<int32_t, S>(out, b, std::forward<Args>(args)...);
+            return F::template call<int32_t, S>(out, scalar_value, std::forward<Args>(args)...);
         // case 64:
         //     return F::template call<int64_t, S>(out, b, std::forward<Args>(args)...);
         default:
@@ -320,11 +320,11 @@ ndarray dispatch_new_scalar(ndarray &out, const S &b, Args... args) {
     case kDLUInt: {
         switch (dtype.bits) {
         case 8:
-            return F::template call<uint8_t, S>(out, b, std::forward<Args>(args)...);
+            return F::template call<uint8_t, S>(out, scalar_value, std::forward<Args>(args)...);
         // case 16:
         //     return F::template call<uint16_t, S>(out, b, std::forward<Args>(args)...);
         case 32:
-            return F::template call<uint32_t, S>(out, b, std::forward<Args>(args)...);
+            return F::template call<uint32_t, S>(out, scalar_value, std::forward<Args>(args)...);
         // case 64:
         //     return F::template call<uint64_t, S>(out, b, std::forward<Args>(args)...);
         default:
