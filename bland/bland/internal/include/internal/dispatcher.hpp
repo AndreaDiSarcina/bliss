@@ -458,10 +458,9 @@ ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
 */
 
 
-
 template <class Op, typename... Args>
 ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
-    if (a.is_scalar()) {
+    if (a.shape().size() == 1 && a.shape()[0] == 1) {
         auto dtype = out.dtype();
         switch (dtype.code) {
         case kDLFloat: {
@@ -551,11 +550,6 @@ ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
         }
     }
 }
-
-
-
-
-
 
 
 
