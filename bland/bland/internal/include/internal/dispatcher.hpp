@@ -466,7 +466,8 @@ ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
         case kDLFloat: {
             switch (dtype.bits) {
             case 32:
-                return dispatch_new_scalar<float, Op>(out, a, std::forward<Args>(args)...);
+                float scalar_value = a.as<float>()[0]; // Extract the scalar value from the ndarray
+                return dispatch_new_scalar<float, Op>(out, scalar_value, std::forward<Args>(args)...);
             // case 64:
             //     return dispatch_new_scalar<double, Op>(out, a, std::forward<Args>(args)...);
             default:
