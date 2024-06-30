@@ -289,6 +289,7 @@ ndarray dispatch_new3(ndarray &out, const ndarray &a, const S &b, Args... args) 
  **/
 template <typename F, typename S, typename ...Args>
 ndarray dispatch_new(ndarray &out, const S &b, Args... args) {
+    static_assert(std::is_same_v<S, ndarray>, "S must be ndarray");
     auto dtype = out.dtype();
 
     switch (dtype.code) {
