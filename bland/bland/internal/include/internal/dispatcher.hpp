@@ -481,9 +481,11 @@ ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
             // case 16:
             //     return dispatch_new_scalar<int16_t, Op>(out, a, std::forward<Args>(args)...);
             case 32:
-                return dispatch_new_scalar<int32_t, Op>(out, a, std::forward<Args>(args)...);
+                float scalar_value = a.scalarize<float>(); // Extract the scalar value from the ndarray
+                return dispatch_new_scalar<int32_t, Op>(out, scalar_value, std::forward<Args>(args)...);
             case 64:
-                return dispatch_new_scalar<int64_t, Op>(out, a, std::forward<Args>(args)...);
+                float scalar_value = a.scalarize<float>(); // Extract the scalar value from the ndarray
+                return dispatch_new_scalar<int64_t, Op>(out, scalar_value, std::forward<Args>(args)...);
             default:
                 throw std::runtime_error("Unsupported int bitwidth");
             }
@@ -491,11 +493,13 @@ ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
         case kDLUInt: {
             switch (dtype.bits) {
             case 8:
-                return dispatch_new_scalar<uint8_t, Op>(out, a, std::forward<Args>(args)...);
+                float scalar_value = a.scalarize<float>(); // Extract the scalar value from the ndarray
+                return dispatch_new_scalar<uint8_t, Op>(out, scalar_value, std::forward<Args>(args)...);
             // case 16:
             //     return dispatch_new_scalar<uint16_t, Op>(out, a, std::forward<Args>(args)...);
             case 32:
-                return dispatch_new_scalar<uint32_t, Op>(out, a, std::forward<Args>(args)...);
+                float scalar_value = a.scalarize<float>(); // Extract the scalar value from the ndarray
+                return dispatch_new_scalar<uint32_t, Op>(out, scalar_value, std::forward<Args>(args)...);
             // case 64:
             //     return dispatch_new_scalar<uint64_t, Op>(out, a, std::forward<Args>(args)...);
             default:
