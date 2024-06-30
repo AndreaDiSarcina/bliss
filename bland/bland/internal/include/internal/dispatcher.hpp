@@ -467,7 +467,7 @@ ndarray dispatch_new(ndarray &out, const ndarray &a, Args... args) {
             switch (dtype.bits) {
             case 32:
                 float scalar_value = a.scalarize<float>(); // Extract the scalar value from the ndarray
-                return dispatch_new_scalar<float, Op>(out, static_cast<const float&>(scalar_value), std::forward<Args>(args)...);
+                return dispatch_new_scalar<float, Op>(out, scalar_value, std::forward<Args>(args)...);
             // case 64:
             //     return dispatch_new_scalar<double, Op>(out, a, std::forward<Args>(args)...);
             default:
